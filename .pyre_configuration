@@ -1,0 +1,10 @@
+{
+  "source_directories": [
+    "backend"
+  ],
+  "search_path": [
+    "/Users/rudrapratapsingh6666/Library/Python/3.9/lib/python/site-packages",
+    "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages",
+    "/Users/rudrapratapsingh6666/Desktop/HACKATHON PROJECT/backend/venv/lib/python3.9/site-packages"
+  ]
+}

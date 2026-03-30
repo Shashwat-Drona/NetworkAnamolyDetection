@@ -1,0 +1,39 @@
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+ids_env/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (large / local)
+cicids_clean.parquet
+cicids_data/
+
+# Local secrets/config
+kaggle.json
+
+# Runtime logs and generated local state
+response_log.csv
+blocked_ips.txt
+quarantine_list.txt
+
+# Optional model/report outputs
+feature_importance.png
+performance_report.json

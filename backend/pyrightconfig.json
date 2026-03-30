@@ -1,0 +1,8 @@
+{
+  "venvPath": "/Users/rudrapratapsingh6666/Desktop/HACKATHON PROJECT/backend",
+  "venv": "venv",
+  "pythonVersion": "3.9",
+  "pythonPlatform": "All",
+  "include": ["."],
+  "extraPaths": ["."]
+}
