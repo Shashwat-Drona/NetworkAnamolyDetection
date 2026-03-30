@@ -1,0 +1,9 @@
+{
+  "name": "networkanomolydetection-workspace",
+  "private": true,
+  "scripts": {
+    "frontend:install": "npm --prefix AnamolyDetection install",
+    "frontend:dev": "npm --prefix AnamolyDetection run dev",
+    "frontend:build": "npm --prefix AnamolyDetection run build"
+  }
+}

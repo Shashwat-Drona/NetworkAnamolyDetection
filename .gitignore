@@ -33,7 +33,19 @@ kaggle.json
 response_log.csv
 blocked_ips.txt
 quarantine_list.txt
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Optional model/report outputs
 feature_importance.png
 performance_report.json
+
+# Frontend (AnamolyDetection)
+AnamolyDetection/node_modules/
+AnamolyDetection/dist/
+AnamolyDetection/.vite/
+AnamolyDetection/.env
+AnamolyDetection/.env.*
+!AnamolyDetection/.env.example
