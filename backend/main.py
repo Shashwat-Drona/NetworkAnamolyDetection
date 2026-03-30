@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from contextlib import asynccontextmanager
 
-from routes import stream, summary, attacks, simulate, upload, ingest, risk, alerts, blacklist
+from routes import stream, summary, attacks, simulate, upload, ingest, risk, alerts, blacklist, predict
 from services.data_store import data_store
 from services.simulator import load_dataset, background_sim_loop
 
@@ -53,6 +53,7 @@ app.include_router(ingest.router,    prefix="/api")
 app.include_router(risk.router,      prefix="/api")
 app.include_router(alerts.router,    prefix="/api")
 app.include_router(blacklist.router, prefix="/api")
+app.include_router(predict.router,   prefix="/api")
 
 
 @app.get("/api/health")

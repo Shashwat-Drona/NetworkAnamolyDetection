@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { to: "/attacks", label: "Attacks" },
   { to: "/insights", label: "Insights" },
   { to: "/simulation", label: "Simulation" },
+  { to: "/predictor", label: "Predictor" },
   { to: "/timeline", label: "Timeline" },
   { to: "/upload", label: "Upload" },
 ];

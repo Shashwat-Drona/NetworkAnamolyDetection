@@ -4,3 +4,7 @@ python-dotenv>=1.0.0
 python-multipart>=0.0.9
 pandas>=2.2.0
 pydantic>=2.7.0
+scikit-learn
+onnxruntime
+joblib
+shap
