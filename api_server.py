@@ -32,6 +32,10 @@ _BLOCKED_IPS: set[str] = set()
 _QUARANTINED_IPS: set[str] = set()
 _ATTACK_LABEL_POOL = ["DoS-Hulk", "PortScan", "SSH BruteForce", "Botnet", "Webattack-SQLi"]
 _ATTACK_LABEL_IDX = 0
+_TOTAL_EVENTS = 0
+_TOTAL_ATTACK_COUNT = 0
+_TOTAL_BENIGN_COUNT = 0
+_TOTAL_ATTACK_TYPES: Counter[str] = Counter()
 
 
 class PredictRequest(BaseModel):
@@ -182,11 +186,20 @@ def _build_flow_profile(mode: str = "normal") -> Dict[str, float]:
 
 
 def _register_event(event: Dict[str, Any]) -> Dict[str, Any]:
+    global _TOTAL_EVENTS, _TOTAL_ATTACK_COUNT, _TOTAL_BENIGN_COUNT
     with _LOCK:
         action, reason = _response_action(event)
         event["action"] = action
         event["reason"] = reason
         _EVENTS.append(event)
+
+        _TOTAL_EVENTS += 1
+        if event.get("attack_type") == "BENIGN":
+            _TOTAL_BENIGN_COUNT += 1
+        else:
+            _TOTAL_ATTACK_COUNT += 1
+            _TOTAL_ATTACK_TYPES[str(event.get("attack_type", "UNKNOWN"))] += 1
+
         _append_prediction_log(event)
     return event
 
@@ -382,7 +395,12 @@ def predict_endpoint(payload: PredictRequest) -> Dict[str, Any]:
 @app.get("/api/summary")
 def summary() -> Dict[str, Any]:
     events = _get_events_copy()
-    total = len(events)
+    with _LOCK:
+        total = _TOTAL_EVENTS
+        attack_count = _TOTAL_ATTACK_COUNT
+        benign_count = _TOTAL_BENIGN_COUNT
+        top_attack_types = dict(_TOTAL_ATTACK_TYPES.most_common(6))
+
     if total == 0:
         return {
             "total_events": 0,
@@ -393,18 +411,13 @@ def summary() -> Dict[str, Any]:
             "top_attack_types": {},
         }
 
-    attack_events = [e for e in events if e.get("attack_type") != "BENIGN"]
-    benign_count = total - len(attack_events)
-    attack_ratio = (len(attack_events) / total) * 100.0
+    attack_ratio = (attack_count / total) * 100.0
     recent = events[-30:]
     system_risk = sum(float(e.get("risk_score", 0.0)) for e in recent) / max(len(recent), 1)
 
-    attack_counter: Counter[str] = Counter(e["attack_type"] for e in attack_events)
-    top_attack_types = dict(attack_counter.most_common(6))
-
     return {
         "total_events": total,
-        "attack_count": len(attack_events),
+        "attack_count": attack_count,
         "benign_count": benign_count,
         "attack_ratio": round(attack_ratio, 2),
         "system_risk": round(system_risk, 2),
